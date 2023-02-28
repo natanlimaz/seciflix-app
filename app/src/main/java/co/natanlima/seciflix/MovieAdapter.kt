@@ -1,6 +1,7 @@
 package co.natanlima.seciflix
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import co.natanlima.seciflix.model.Movie
+import co.natanlima.seciflix.util.DownloadImageTask
+import com.squareup.picasso.Picasso
 
 class MovieAdapter(private val movies: List<Movie>, @LayoutRes private val layoutId: Int) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
@@ -28,9 +31,13 @@ class MovieAdapter(private val movies: List<Movie>, @LayoutRes private val layou
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
             val imageCover: ImageView = itemView.findViewById(R.id.img_cover)
+            DownloadImageTask(object : DownloadImageTask.Callback {
+                override fun onResult(bitmap: Bitmap) {
+                    imageCover.setImageBitmap(bitmap)
+                }
+            }).execute(movie.coverUrl)
 
-            // TODO: aqui vai ser trocado por uma URL que virá do servidor
-
+            // Picasso.get().load(movie.coverUrl).into(imageCover)
         }
     }
 
