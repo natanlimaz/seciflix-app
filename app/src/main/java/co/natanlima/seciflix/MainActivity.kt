@@ -1,5 +1,6 @@
 package co.natanlima.seciflix
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,11 @@ class MainActivity : AppCompatActivity(), CategoryTask.Callback {
 
         progressBar = findViewById(R.id.progress_main)
 
-        adapter = CategoryAdapter(categories)
+        adapter = CategoryAdapter(categories) {id ->
+            val intent = Intent(this@MainActivity, MovieActivity::class.java)
+            intent.putExtra("id", id)
+            startActivity(intent)
+        }
         val rvMain: RecyclerView = findViewById(R.id.rv_main)
         rvMain.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rvMain.adapter = adapter
